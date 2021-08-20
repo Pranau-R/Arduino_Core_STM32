@@ -45,3 +45,4 @@ __vm
 
 # VS Code things
 .vscode
+.DS_Store
