@@ -4,7 +4,7 @@ This repository is MCCI's version of [Arduino_Core_STM32](https://github.com/stm
 
 For general information, please check the stm32duino [README.md](https://github.com/stm32duino/Arduino_Core_STM32#arduino-core-support-for-stm32-based-boards), especially the [Getting Started](https://github.com/stm32duino/Arduino_Core_STM32#getting-started) section.
 
-[![GitHub release](https://img.shields.io/github/release/mcci-catena/Arduino_Core_STM32.svg)](https://github.com/mcci-catena/Arduino_Core_STM32/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/mcci-catena/Arduino_Core_STM32/latest.svg)](https://github.com/mcci-catena/Arduino_Core_STM32/compare/v3.0.2...master)
+[![GitHub release](https://img.shields.io/github/release/mcci-catena/Arduino_Core_STM32.svg)](https://github.com/mcci-catena/Arduino_Core_STM32/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/mcci-catena/Arduino_Core_STM32/latest.svg)](https://github.com/mcci-catena/Arduino_Core_STM32/compare/v3.0.3...master)
 
 **Contents:**
 <!-- markdownlint-disable MD033 -->
@@ -15,10 +15,10 @@ For general information, please check the stm32duino [README.md](https://github.
 - [Getting Started](#getting-started)
 - [Features](#features)
 - [Supported Boards and CPUs](#supported-boards-and-cpus)
-	- [Catena 461x Series](#catena-461x-series)
-		- [Sensors on Catena 4612, 4617, and 4618](#sensors-on-catena-4612-4617-and-4618)
-	- [Catena 4630 Features](#catena-4630-features)
-	- [Catena 480x Features](#catena-480x-features)
+    - [Catena 461x Series](#catena-461x-series)
+        - [Sensors on Catena 4612, 4617, and 4618](#sensors-on-catena-4612-4617-and-4618)
+    - [Catena 4630 Features](#catena-4630-features)
+    - [Catena 480x Features](#catena-480x-features)
 - [Troubleshooting](#troubleshooting)
 - [Installing a Development Copy of this BSP](#installing-a-development-copy-of-this-bsp)
 - [Release History](#release-history)
@@ -155,6 +155,8 @@ If you want to develop and test changes to this package, we suggest the followin
 Remember to restart the IDE whenever you change `platform.txt`, `boards.txt` or `programmers.txt`.
 
 ## Release History
+
+- [v3.0.3](ttps://github.com/mcci-catena/Arduino_Core_STM32/releases/tag/v3.0.3) Patch release. Fix typo in `tools/macosx/stm32l0-upload` that broke DFU on macOS.
 
 - [v3.0.2](https://github.com/mcci-catena/Arduino_Core_STM32/releases/tag/v3.0.2) Patch release. Update `mccibootloader_image` tool to v0.4.0 ([#171](https://github.com/mcci-catena/Arduino_Core_STM32/issues/171)) to fix problem with ELF files with unusual number of program headers.
 
