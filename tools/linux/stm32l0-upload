@@ -36,7 +36,7 @@ if [[ "$1" != "-" ]]; then
     _usage "First two args are vid/pid; both must be '-' if either is"
   fi
 elif [[ "$2" != "-" ]]; then
-  _usage "First two args are vid/pid; bost must be '-' if either is"
+  _usage "First two args are vid/pid; both must be '-' if either is"
 fi
 
 FILE="$3"
