@@ -27,6 +27,7 @@ function _usage {
 
 TOOLDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 
+# VIDPID is either empty or has a trailing comma.
 VIDPID=
 if [[ "$1" != "-" ]]; then
   if [[ "$2" != "-" ]]; then
@@ -35,7 +36,7 @@ if [[ "$1" != "-" ]]; then
     _usage "First two args are vid/pid; both must be '-' if either is"
   fi
 elif [[ "$2" != "-" ]]; then
-  _usage "First two args are vid/pid; bost must be '-' if either is"
+  _usage "First two args are vid/pid; both must be '-' if either is"
 fi
 
 FILE="$3"
@@ -78,6 +79,7 @@ fi
 
 if [[ $VERBOSE -ne 0 ]]; then
   echo "Program file:   $FILE"
+  # VIDPID is either empty or has a trailing comma. Strip the trailing comma for display
   echo "Board VID:PID:  ${VIDPID%,}"
   echo "Base address:   $BASEADDR"
   if [[ "$BOOTLOADER" != "-" ]]; then
@@ -113,13 +115,15 @@ fi
 # upload
 if [[ "$BOOTLOADER" != "-" ]]; then
   # upload the bootloader, and leave in upload mode.
-  if ! "$TOOLDIR"/dfu-util -d "VIDPID"0x0483:0xdf11 -a 0 -s 0x08000000 -D "$BOOTLOADER"; then
+  # VIDPID is either empty or has a trailing comma.
+  if ! "$TOOLDIR"/dfu-util -d "$VIDPID"0x0483:0xdf11 -a 0 -s 0x08000000 -D "$BOOTLOADER"; then
     echo "bootloader upload failed"
     exit 1
   fi
 fi
 
-if ! "$TOOLDIR"/dfu-util -d "VIDPID"0x0483:0xdf11 -a 0 -s "$BASEADDR:leave" -D "$FILE" ; then
+# do the main upload. Again, VIDPID is eitehr empty or has a trailing comma.
+if ! "$TOOLDIR"/dfu-util -d "$VIDPID"0x0483:0xdf11 -a 0 -s "$BASEADDR:leave" -D "$FILE" ; then
   echo "main upload failed"
   exit 1
 fi
