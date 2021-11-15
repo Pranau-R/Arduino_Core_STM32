@@ -52,7 +52,7 @@
 ///     \ref _mcci_arduino_version_calc() to compare relative versions.
 ///
 #define	_mcci_arduino_version	\
-  _mcci_arduino_version_calc(3, 0, 4, 0)	/* v3.0.4 */
+  _mcci_arduino_version_calc(3, 0, 5, 1)	/* v3.0.5-pre1 */
 
 ///
 /// \brief get major version code from semantic version value
