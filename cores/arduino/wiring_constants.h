@@ -1,5 +1,6 @@
 /*
   Copyright (c) 2011 Arduino.  All right reserved.
+  Portions copyright (c) 2021 MCCI Corporation. All rights reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -22,9 +23,17 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-#include <algorithm>
-using std::min;
-using std::max;
+  template<class T, class L> 
+  auto min(const T& a, const L& b) -> decltype((b < a) ? b : a)
+  {
+    return (b < a) ? b : a;
+  }
+
+  template<class T, class L> 
+  auto max(const T& a, const L& b) -> decltype((b < a) ? b : a)
+  {
+    return (a < b) ? b : a;
+  }
 #else // C
 #ifndef abs
 #define abs(x) ((x)>0?(x):-(x))
