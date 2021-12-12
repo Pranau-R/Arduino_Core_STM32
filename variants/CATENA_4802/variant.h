@@ -75,7 +75,7 @@ enum {
   PC1,  //D30     RADIO_ANT_SWITCH_TX_BOOST CRF3  Murata internal
   PC2,  //D31     RADIO_ANT_SWITCH_TX_RFO   CRF2  Murata internal
   NC_1, //D32     Flash Write-Protect (not supported these platforms)
-  PA8,  //D33     TCXO VDD, possibly VDD boost enable
+  PA8,  //D33     TCXO VDD
   PA11,	//D34     PA11_EN, external I2C Level shifter enable
   PEND
 };
