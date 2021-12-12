@@ -58,8 +58,19 @@ void stm32_interrupt_enable(GPIO_TypeDef *port, uint16_t pin, callback_function_
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void stm32_interrupt_enable(GPIO_TypeDef *port, uint16_t pin, void (*callback)(void), uint32_t mode);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/// \brief Symbolic type for interrupt callback functions
+typedef void (stm32_interrupt_callback_fn_t)(void);
+
+void stm32_interrupt_enable(GPIO_TypeDef *port, uint16_t pin, stm32_interrupt_callback_fn_t *callback, uint32_t mode);
 void stm32_interrupt_disable(GPIO_TypeDef *port, uint16_t pin);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __INTERRUPT_H */
 
