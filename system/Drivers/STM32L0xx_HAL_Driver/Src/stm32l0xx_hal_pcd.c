@@ -190,7 +190,7 @@ HAL_StatusTypeDef HAL_PCD_Init(PCD_HandleTypeDef *hpcd)
  hpcd->Instance->BTABLE = BTABLE_ADDRESS;
  
  /*set wInterrupt_Mask global variable*/
- wInterrupt_Mask = USB_CNTR_CTRM  | USB_CNTR_WKUPM | USB_CNTR_SUSPM | USB_CNTR_ERRM \
+ wInterrupt_Mask = USB_CNTR_CTRM  | USB_CNTR_WKUPM | USB_CNTR_SUSPM /* | USB_CNTR_ERRM */ \
    | USB_CNTR_SOFM | USB_CNTR_ESOFM | USB_CNTR_RESETM;
  
   /*Set interrupt mask*/
@@ -353,7 +353,8 @@ void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd)
 
   if (__HAL_PCD_GET_FLAG (hpcd, USB_ISTR_ERR))
   {
-    __HAL_PCD_CLEAR_FLAG(hpcd, USB_ISTR_ERR); 
+    __HAL_PCD_CLEAR_FLAG(hpcd, USB_ISTR_ERR);
+    hpcd->Instance->CNTR &= ~USB_ISTR_ERR;
   }
 
   if (__HAL_PCD_GET_FLAG (hpcd, USB_ISTR_WKUP))
@@ -362,7 +363,7 @@ void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd)
     hpcd->Instance->CNTR &= (uint16_t) ~(USB_CNTR_LPMODE);
     
     /*set wInterrupt_Mask global variable*/
-    wInterrupt_Mask = USB_CNTR_CTRM  | USB_CNTR_WKUPM | USB_CNTR_SUSPM | USB_CNTR_ERRM \
+    wInterrupt_Mask = USB_CNTR_CTRM  | USB_CNTR_WKUPM | USB_CNTR_SUSPM /* | USB_CNTR_ERRM */ \
       | USB_CNTR_SOFM | USB_CNTR_ESOFM | USB_CNTR_RESETM;
 
     /*Set interrupt mask*/
