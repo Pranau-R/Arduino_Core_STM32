@@ -353,7 +353,8 @@ void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd)
 
   if (__HAL_PCD_GET_FLAG (hpcd, USB_ISTR_ERR))
   {
-    __HAL_PCD_CLEAR_FLAG(hpcd, USB_ISTR_ERR); 
+    __HAL_PCD_CLEAR_FLAG(hpcd, USB_ISTR_ERR);
+    hpcd->Instance->CNTR &= ~USB_ISTR_ERR;
   }
 
   if (__HAL_PCD_GET_FLAG (hpcd, USB_ISTR_WKUP))
