@@ -35,8 +35,23 @@
   *
   ******************************************************************************
   */
+
 #include "stm32_def.h"
 #include "hw_config.h"
+
+#ifndef	CATENA_CFG_SYSCLK
+# ifdef USBCON
+#  define CATENA_CFG_SYSCLK	16
+# else
+#  define CATENA_CFG_SYSCLK	4
+# endif
+#endif
+
+#if CATENA_CFG_SYSCLK < 16
+# ifdef USBCON
+#  error USB cannot be supported at clock rates < 16 MHz (CATENA_CFG_SYSCLK < 16)
+# endif
+#endif
 
 #ifdef __cplusplus
  extern "C" {
@@ -53,7 +68,7 @@ void hw_config_init(void)
   HAL_Init();
 
   // Configure the system clock
-  SystemClock_Config();
+  SystemClock_Config(CATENA_CFG_SYSCLK);
 }
 #ifdef __cplusplus
 }
