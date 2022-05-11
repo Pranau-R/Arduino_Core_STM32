@@ -99,5 +99,13 @@
 				}
 			]
 			},
+
+			{
+			"modelnumber": 	"5120",
+			"pid": 		"00E1",
+			"build_variant": "CATENA_5xxx",
+			"build_variant_extra_flags":	"-DMCCI_CATENA_5xxx_PA0_SWITCHES_VDD=1",
+			"build_board_old_flags":	"-DARDUINO_CATENA_{{modelnumber}}"
+			},
 		]
 }
