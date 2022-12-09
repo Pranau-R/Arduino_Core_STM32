@@ -310,3 +310,11 @@ $section xserial
 {{board}}.menu.xserial.none.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x0
 {{board}}.menu.xserial.two.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x6
 %%-xserial_nousb
+
+%%+xserial_nousb_serial1
+{{board}}.menu.xserial.generic=Generic Serial
+{{board}}.menu.xserial.none=No Serial
+{{board}}.menu.xserial.generic.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x2
+{{board}}.menu.xserial.none.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x0
+{{board}}.menu.xserial.two.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x6
+%%-xserial_nousb_serial1
