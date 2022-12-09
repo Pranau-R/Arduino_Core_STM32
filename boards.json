@@ -101,6 +101,21 @@
 			},
 
 			{
+			"modelnumber": 	"4916",
+			"board":	"mcci_model_{{modelnumber}}",
+			"name": 	"MCCI Model {{modelnumber}}",
+			"build_board": 		"MCCI_MODEL_{{modelnumber}}",
+			"build_variant": "MODEL_4916",
+			"bootloader_file":	"McciBootloader_4801",
+			"bootloader_tool":	"stlink_upload",
+			"extra_sections": [
+				{ "name": "xserial",
+				  "using": "xserial_nousb_serial1"
+				}
+			]
+			},
+
+			{
 			"modelnumber": 	"4917",
 			"board":	"mcci_model_{{modelnumber}}",
 			"name": 	"MCCI Model {{modelnumber}}",
