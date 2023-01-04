@@ -106,7 +106,6 @@
 			"name": 	"MCCI Model {{modelnumber}}",
 			"build_board": 		"MCCI_MODEL_{{modelnumber}}",
 			"build_variant": "MODEL_4916",
-			"bootloader_file":	"McciBootloader_4801",
 			"bootloader_tool":	"stlink_upload",
 			"extra_sections": [
 				{ "name": "xserial",
