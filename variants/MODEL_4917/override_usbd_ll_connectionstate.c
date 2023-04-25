@@ -3,10 +3,10 @@
 Module: override_usbd_ll_connectionstate.c
 
 Function:
-        Override USBD_LL_ConnectionState() function for CATENA_4551 variant.
+        Override USBD_LL_ConnectionState() function for CATENA_4917 variant.
 
 Copyright notice and license information:
-        Copyright 2018-2019 MCCI Corporation. All rights reserved.
+        Copyright 2018-2023 MCCI Corporation. All rights reserved.
 
         This library is free software; you can redistribute it and/or
         modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ Copyright notice and license information:
         Boston, MA  02110-1301  USA
 
 Author:
-        ChaeHee Won, MCCI Corporation
+        Dhinesh Kumar Pitchai, MCCI Corporation
 
 */
 

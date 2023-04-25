@@ -6,7 +6,7 @@ Function:
         Defines the special-function pins for this board.
 
 Copyright Notice:
-        Copyright (c) 2018, MCCI Corporation
+        Copyright (c) 2023, MCCI Corporation
         Copyright (c) 2016, STMicroelectronics
         All rights reserved.
 
@@ -35,7 +35,7 @@ Copyright Notice:
 
 Authors:
         STMicroelecronics
-        ChaeHee Won, MCCI Corporation
+        Dhinesh Kumar Pitchai, MCCI Corporation
 
 */
 
