@@ -5,7 +5,7 @@
 ; Function:
 ;	Installs the driver for MCCI Catena STM32 Version Boards
 ;
-; Copyright (c) 2020 MCCI Corporation
+; Copyright (c) 2020, 2023 MCCI Corporation
 ;
 ; MCCI is a registered trademark of MCCI Corporation.
 ;
@@ -20,8 +20,9 @@ CatalogFile.nt = mcci-catena-stm32.cat
 CatalogFile.ntx86 = mcci-catena-stm32.cat
 CatalogFile.ntia64 = mcci-catena-stm32.cat
 CatalogFile.ntamd64 = mcci-catena-stm32.cat
+PnpLockdown = 1
 ; DriverVer date is MM/DD/YYYY
-DriverVer=03/16/2020,1.0.0.0
+DriverVer=02/07/2023,10.0.22621.1194
 
 [Manufacturer]
 %MFG%=MCCICatena, NT, NTx86, NTia64, NTamd64
@@ -34,6 +35,7 @@ DriverVer=03/16/2020,1.0.0.0
 %mcci_catena_4617.name%=MCCICatenaInstall, USB\VID_040E&PID_00C1
 %mcci_catena_4618.name%=MCCICatenaInstall, USB\VID_040E&PID_00D1
 %mcci_catena_4630.name%=MCCICatenaInstall, USB\VID_040E&PID_00B1
+%mcci_catena_4917.name%=MCCICatenaInstall, USB\VID_040E&PID_00F1
 
 [MCCICatena.NTx86] 
 %mcci_catena_4551.name%=MCCICatenaInstall, USB\VID_040E&PID_0041
@@ -43,6 +45,7 @@ DriverVer=03/16/2020,1.0.0.0
 %mcci_catena_4617.name%=MCCICatenaInstall, USB\VID_040E&PID_00C1
 %mcci_catena_4618.name%=MCCICatenaInstall, USB\VID_040E&PID_00D1
 %mcci_catena_4630.name%=MCCICatenaInstall, USB\VID_040E&PID_00B1
+%mcci_catena_4917.name%=MCCICatenaInstall, USB\VID_040E&PID_00F1
 
 [MCCICatena.NTia64] 
 %mcci_catena_4551.name%=MCCICatenaInstall, USB\VID_040E&PID_0041
@@ -52,6 +55,7 @@ DriverVer=03/16/2020,1.0.0.0
 %mcci_catena_4617.name%=MCCICatenaInstall, USB\VID_040E&PID_00C1
 %mcci_catena_4618.name%=MCCICatenaInstall, USB\VID_040E&PID_00D1
 %mcci_catena_4630.name%=MCCICatenaInstall, USB\VID_040E&PID_00B1
+%mcci_catena_4917.name%=MCCICatenaInstall, USB\VID_040E&PID_00F1
 
 [MCCICatena.NTamd64] 
 %mcci_catena_4551.name%=MCCICatenaInstall, USB\VID_040E&PID_0041
@@ -61,6 +65,7 @@ DriverVer=03/16/2020,1.0.0.0
 %mcci_catena_4617.name%=MCCICatenaInstall, USB\VID_040E&PID_00C1
 %mcci_catena_4618.name%=MCCICatenaInstall, USB\VID_040E&PID_00D1
 %mcci_catena_4630.name%=MCCICatenaInstall, USB\VID_040E&PID_00B1
+%mcci_catena_4917.name%=MCCICatenaInstall, USB\VID_040E&PID_00F1
 
 [DestinationDirs]
 FakeModemCopyFileSection = 12  ;%windir%\system32\drivers
@@ -173,4 +178,5 @@ mcci_catena_4612.name="MCCI Catena 4612"
 mcci_catena_4617.name="MCCI Catena 4617"
 mcci_catena_4618.name="MCCI Catena 4618"
 mcci_catena_4630.name="MCCI Catena 4630"
+mcci_catena_4917.name="MCCI Catena 4917"
 ServiceName = "MCCI Catena STM32 USB Serial Driver"
