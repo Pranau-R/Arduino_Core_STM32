@@ -2171,3 +2171,4 @@ mcci_model_4917.menu.lorawan_subband.sb11=sb11, ch 88~95 (CN470)
 mcci_model_4917.menu.lorawan_subband.sb11.build.lorawan_subband_flags=-DARDUINO_LMIC_CFG_SUBBAND=11
 
 #### end of configuration info for MCCI Model 4917
+
