@@ -19,6 +19,7 @@ For general information, please check the stm32duino [README.md](https://github.
 		- [Sensors on Catena 4612, 4617, and 4618](#sensors-on-catena-4612-4617-and-4618)
 	- [Catena 4630 Features](#catena-4630-features)
 	- [Catena 480x Features](#catena-480x-features)
+	- [Model 4917 Features](#model-4917-features)
 - [Troubleshooting](#troubleshooting)
 - [Installing a Development Copy of this BSP](#installing-a-development-copy-of-this-bsp)
 - [Release History](#release-history)
@@ -60,6 +61,7 @@ The Arduino IDE allows you to select the following items.
 | MCCI Catena 4630 | Murata CMWX1ZZABZ module, STM32L082 | [4630](#catena-4630-features) | LiPo battery,ZMOD4410, PMS7003 |
 | MCCI Catena 4801 | Murata CMWX1ZZABZ module, STM32L082 | [480x](#catena-480x-features) | Primary battery, Modbus |
 | MCCI Catena 4802 | Murata CMWX1ZZABZ module, STM32L082 | [480x](#catena-480x-features) | Primary battery, Modbus, SHT31-DIS-F, I2C Expander |
+| MCCI Model 4917 | Murata CMWX1ZZABZ module, STM32L082 | [4917](#model-4917-features) | Primary battery, JST-XH for OneWire sensor |
 
 ### Catena 461x Series
 
@@ -122,6 +124,24 @@ The 480x is a dedicated board for remote Modbus applications, using the Murata m
 | Sensors | none | SHT31 |
 | External interfaces | Modbus, TTL serial | Modbus, TTL serial, I2C Expander |
 
+### Model 4917 Features
+
+The 4917 is a dedicated board designed for temperature monitoring using onewire probe.
+
+| Feature | 4917 |
+|---------|------|
+| TCXO Control | Controlled by code |
+| Battery type | Primary (non-rechargeable) reference is 2x AAA cells |
+| System voltage | 2.2V to 3.3V, depending on whether boost regulator is enabled. |
+| Regulator control | EN output from CPU controls boost regulator. |
+| High-side switch for power for external sensors | No |
+| Screw terminals for external sensors | None |
+| JST-XH for external sensors | Yes |
+| Feather physical compatibility | No |
+| USB | Yes, DFU download, runtime data |
+| Sensors | None |
+| External interfaces | TTL Serial |
+
 ## Troubleshooting
 
 If you have any issue, you may [file an issue on GitHub](https://github.com/mcci-catena/Arduino_Core_STM32/issues/new).  You may also submit a support request on the [MCCI support forum](http://portal.mcci.com).
@@ -155,6 +175,8 @@ If you want to develop and test changes to this package, we suggest the followin
 Remember to restart the IDE whenever you change `platform.txt`, `boards.txt` or `programmers.txt`.
 
 ## Release History
+
+- [HEAD](https://github.com/mcci-catena/Arduino_Core_STM32/). Added support for new board Model 4917.
 
 - [v3.0.5](https://github.com/mcci-catena/Arduino_Core_STM32/releases/tag/v3.0.5) Patch release. Don't use `<algorithm>` to implement `min()` and `max()` ([#184](https://github.com/mcci-catena/Arduino_Core_STM32/issues/184)). Prevent hangs if USB is enabled but D+/D- float to high/high ([#189](https://github.com/mcci-catena/Arduino_Core_STM32/issues/189), [#190](https://github.com/mcci-catena/Arduino_Core_STM32/issues/190)) -- thanks to Mohammed Mayyan ([@mmayyan](https://github.com/mhmayyan)) for help in finding this.
 
