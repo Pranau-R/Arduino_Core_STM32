@@ -294,6 +294,7 @@ $section xserial
 %%+xserial_usb_serial12
 {{board}}.menu.xserial.usbhwserial=USB + Two HW Serial
 {{board}}.menu.xserial.usb=USB Serial Only
+{{board}}.menu.xserial.two=Two HW Serial
 {{board}}.menu.xserial.generic=Generic Serial
 {{board}}.menu.xserial.none=No Serial
 {{board}}.menu.xserial.usbhwserial.build.xSerial={build.usb_flags} -DARDUINO_BSP_CONFIG_SERIAL_MASK=0x7

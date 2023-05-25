@@ -127,6 +127,14 @@ enum {
 #define TIMER_SERVO             TIM2  //TODO: advanced-control timers don't work
 
 // UART Definitions
+// Define here Serial instance number to map on Serial generic name
+#define SERIAL_UART_INSTANCE    2 //ex: 2 for Serial2 (USART2)
+// Default pin used for 'Serial' instance (ex: ST-Link)
+// Mandatory for Firmata
+#define PIN_SERIAL_RX           D0
+#define PIN_SERIAL_TX           D1
+
+// UART Definitions
 
 #ifdef __cplusplus
 } // extern "C"
