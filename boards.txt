@@ -1307,6 +1307,7 @@ mcci_catena_4630.menu.xserial.usbhwserial.build.xSerial={build.usb_flags} -DARDU
 mcci_catena_4630.menu.xserial.usb.build.xSerial={build.usb_flags} -DARDUINO_BSP_CONFIG_SERIAL_MASK=0x1
 mcci_catena_4630.menu.xserial.generic.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x2
 mcci_catena_4630.menu.xserial.none.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x0
+mcci_catena_4630.menu.xserial.two.build.xSerial=-DARDUINO_BSP_CONFIG_SERIAL_MASK=0x6
 
 #
 # menu.sysclk
