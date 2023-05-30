@@ -196,7 +196,7 @@ Remember to restart the IDE whenever you change `platform.txt`, `boards.txt` or 
 
 ## Release History
 
-- [HEAD](https://github.com/mcci-catena/Arduino_Core_STM32/). Added support for new board Model 4917 and Model 4916.
+- [HEAD](https://github.com/mcci-catena/Arduino_Core_STM32/). Added support for new board Model 4917 and Model 4916. Added Two HW Serial support for Catena 4630.
 
 - [v3.0.5](https://github.com/mcci-catena/Arduino_Core_STM32/releases/tag/v3.0.5) Patch release. Don't use `<algorithm>` to implement `min()` and `max()` ([#184](https://github.com/mcci-catena/Arduino_Core_STM32/issues/184)). Prevent hangs if USB is enabled but D+/D- float to high/high ([#189](https://github.com/mcci-catena/Arduino_Core_STM32/issues/189), [#190](https://github.com/mcci-catena/Arduino_Core_STM32/issues/190)) -- thanks to Mohammed Mayyan ([@mmayyan](https://github.com/mhmayyan)) for help in finding this.
 
