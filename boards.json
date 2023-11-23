@@ -129,7 +129,7 @@
 			"modelnumber": 	"4931",
 			"board":	"mcci_model_{{modelnumber}}",
 			"name": 	"MCCI Model {{modelnumber}}",
-			"pid": 		"xxxx", // TBD
+			"pid": 		"0215",
 			"build_board": 		"MCCI_MODEL_{{modelnumber}}",
 			"build_variant": "MODEL_4931",
 			"extra_sections": [
