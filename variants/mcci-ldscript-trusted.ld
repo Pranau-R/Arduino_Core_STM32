@@ -4,7 +4,7 @@
 
 **  File        : mcci-ldscript-stage3.ld
 **
-**  Abstract    : Linker script for STM32L082CZYx Device with
+**  Abstract    : Linker script for STM32L072CZYx Device with
 **                192KByte FLASH, 20KByte RAM, when using MCCI Trusted
 **		  bootloader.
 **

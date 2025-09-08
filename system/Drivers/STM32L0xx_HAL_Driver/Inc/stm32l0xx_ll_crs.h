@@ -6,29 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -110,7 +93,7 @@ extern "C" {
 /** @defgroup CRS_LL_EC_SYNC_DIV Synchronization Signal Divider
   * @{
   */
-#define LL_CRS_SYNC_DIV_1                  ((uint32_t)0x00U)                         /*!< Synchro Signal not divided (default) */
+#define LL_CRS_SYNC_DIV_1                  (0x00U)                         /*!< Synchro Signal not divided (default) */
 #define LL_CRS_SYNC_DIV_2                  CRS_CFGR_SYNCDIV_0                        /*!< Synchro Signal divided by 2 */
 #define LL_CRS_SYNC_DIV_4                  CRS_CFGR_SYNCDIV_1                        /*!< Synchro Signal divided by 4 */
 #define LL_CRS_SYNC_DIV_8                  (CRS_CFGR_SYNCDIV_1 | CRS_CFGR_SYNCDIV_0) /*!< Synchro Signal divided by 8 */
@@ -125,7 +108,7 @@ extern "C" {
 /** @defgroup CRS_LL_EC_SYNC_SOURCE Synchronization Signal Source
   * @{
   */
-#define LL_CRS_SYNC_SOURCE_GPIO            ((uint32_t)0x00U)       /*!< Synchro Signal soucre GPIO */
+#define LL_CRS_SYNC_SOURCE_GPIO            (0x00U)       /*!< Synchro Signal source GPIO */
 #define LL_CRS_SYNC_SOURCE_LSE             CRS_CFGR_SYNCSRC_0      /*!< Synchro Signal source LSE */
 #define LL_CRS_SYNC_SOURCE_USB             CRS_CFGR_SYNCSRC_1      /*!< Synchro Signal source USB SOF (default)*/
 /**
@@ -135,7 +118,7 @@ extern "C" {
 /** @defgroup CRS_LL_EC_SYNC_POLARITY Synchronization Signal Polarity
   * @{
   */
-#define LL_CRS_SYNC_POLARITY_RISING        ((uint32_t)0x00U)     /*!< Synchro Active on rising edge (default) */
+#define LL_CRS_SYNC_POLARITY_RISING        (0x00U)     /*!< Synchro Active on rising edge (default) */
 #define LL_CRS_SYNC_POLARITY_FALLING       CRS_CFGR_SYNCPOL      /*!< Synchro Active on falling edge */
 /**
   * @}
@@ -144,8 +127,8 @@ extern "C" {
 /** @defgroup CRS_LL_EC_FREQERRORDIR Frequency Error Direction
   * @{
   */
-#define LL_CRS_FREQ_ERROR_DIR_UP             ((uint32_t)0x00U)         /*!< Upcounting direction, the actual frequency is above the target */
-#define LL_CRS_FREQ_ERROR_DIR_DOWN           ((uint32_t)CRS_ISR_FEDIR) /*!< Downcounting direction, the actual frequency is below the target */
+#define LL_CRS_FREQ_ERROR_DIR_UP             (0x00U)         /*!< Upcounting direction, the actual frequency is above the target */
+#define LL_CRS_FREQ_ERROR_DIR_DOWN           CRS_ISR_FEDIR /*!< Downcounting direction, the actual frequency is below the target */
 /**
   * @}
   */
@@ -158,24 +141,24 @@ extern "C" {
   * @note The reset value of the RELOAD field corresponds to a target frequency of 48 MHz
   *       and a synchronization signal frequency of 1 kHz (SOF signal from USB)
   */
-#define LL_CRS_RELOADVALUE_DEFAULT         ((uint32_t)0xBB7FU)      
+#define LL_CRS_RELOADVALUE_DEFAULT         (0xBB7FU)
 
 /**
   * @brief Reset value of Frequency error limit.
   */
-#define LL_CRS_ERRORLIMIT_DEFAULT          ((uint32_t)0x22U)      
+#define LL_CRS_ERRORLIMIT_DEFAULT          (0x22U)
 
 /**
   * @brief Reset value of the HSI48 Calibration field
-  * @note The default value is 32, which corresponds to the middle of the trimming interval. 
-  *       The trimming step is around 67 kHz between two consecutive TRIM steps. 
+  * @note The default value is 32, which corresponds to the middle of the trimming interval.
+  *       The trimming step is around 67 kHz between two consecutive TRIM steps.
   *       A higher TRIM value corresponds to a higher output frequency
   */
-#define LL_CRS_HSI48CALIBRATION_DEFAULT    ((uint32_t)0x20U)      
+#define LL_CRS_HSI48CALIBRATION_DEFAULT    (0x20U)
 /**
   * @}
-  */ 
-  
+  */
+
 /**
   * @}
   */
@@ -215,7 +198,7 @@ extern "C" {
 
 /**
   * @brief  Macro to calculate reload value to be set in CRS register according to target and sync frequencies
-  * @note   The RELOAD value should be selected according to the ratio between 
+  * @note   The RELOAD value should be selected according to the ratio between
   *         the target frequency and the frequency of the synchronization source after
   *         prescaling. It is then decreased by one in order to reach the expected
   *         synchronization on the zero value. The formula is the following:
@@ -309,7 +292,7 @@ __STATIC_INLINE uint32_t LL_CRS_IsEnabledAutoTrimming(void)
   * @note   When the AUTOTRIMEN bit is set, this field is controlled by hardware and is read-only
   * @rmtoll CR           TRIM          LL_CRS_SetHSI48SmoothTrimming
   * @param  Value a number between Min_Data = 0 and Max_Data = 63
-  * @note   Default value can be set thanks to @ref LL_CRS_HSI48CALIBRATION_DEFAULT 
+  * @note   Default value can be set thanks to @ref LL_CRS_HSI48CALIBRATION_DEFAULT
   * @retval None
   */
 __STATIC_INLINE void LL_CRS_SetHSI48SmoothTrimming(uint32_t Value)
@@ -331,7 +314,7 @@ __STATIC_INLINE uint32_t LL_CRS_GetHSI48SmoothTrimming(void)
   * @brief  Set counter reload value
   * @rmtoll CFGR         RELOAD        LL_CRS_SetReloadCounter
   * @param  Value a number between Min_Data = 0 and Max_Data = 0xFFFF
-  * @note   Default value can be set thanks to @ref LL_CRS_RELOADVALUE_DEFAULT 
+  * @note   Default value can be set thanks to @ref LL_CRS_RELOADVALUE_DEFAULT
   *         Otherwise it can be calculated in using macro @ref __LL_CRS_CALC_CALCULATE_RELOADVALUE (_FTARGET_, _FSYNC_)
   * @retval None
   */
@@ -354,7 +337,7 @@ __STATIC_INLINE uint32_t LL_CRS_GetReloadCounter(void)
   * @brief  Set frequency error limit
   * @rmtoll CFGR         FELIM         LL_CRS_SetFreqErrorLimit
   * @param  Value a number between Min_Data = 0 and Max_Data = 255
-  * @note   Default value can be set thanks to @ref LL_CRS_ERRORLIMIT_DEFAULT 
+  * @note   Default value can be set thanks to @ref LL_CRS_ERRORLIMIT_DEFAULT
   * @retval None
   */
 __STATIC_INLINE void LL_CRS_SetFreqErrorLimit(uint32_t Value)
@@ -482,8 +465,8 @@ __STATIC_INLINE uint32_t LL_CRS_GetSyncPolarity(void)
 __STATIC_INLINE void LL_CRS_ConfigSynchronization(uint32_t HSI48CalibrationValue, uint32_t ErrorLimitValue, uint32_t ReloadValue, uint32_t Settings)
 {
   MODIFY_REG(CRS->CR, CRS_CR_TRIM, HSI48CalibrationValue);
-  MODIFY_REG(CRS->CFGR, 
-             CRS_CFGR_RELOAD | CRS_CFGR_FELIM | CRS_CFGR_SYNCDIV | CRS_CFGR_SYNCSRC | CRS_CFGR_SYNCPOL, 
+  MODIFY_REG(CRS->CFGR,
+             CRS_CFGR_RELOAD | CRS_CFGR_FELIM | CRS_CFGR_SYNCDIV | CRS_CFGR_SYNCSRC | CRS_CFGR_SYNCPOL,
              ReloadValue | (ErrorLimitValue << CRS_POSITION_FELIM) | Settings);
 }
 
@@ -506,7 +489,7 @@ __STATIC_INLINE void LL_CRS_GenerateEvent_SWSYNC(void)
 }
 
 /**
-  * @brief  Get the frequency error direction latched in the time of the last 
+  * @brief  Get the frequency error direction latched in the time of the last
   * SYNC event
   * @rmtoll ISR          FEDIR         LL_CRS_GetFreqErrorDirection
   * @retval Returned value can be one of the following values:
@@ -627,7 +610,7 @@ __STATIC_INLINE void LL_CRS_ClearFlag_SYNCWARN(void)
 }
 
 /**
-  * @brief  Clear TRIMOVF, SYNCMISS and SYNCERR bits and consequently also 
+  * @brief  Clear TRIMOVF, SYNCMISS and SYNCERR bits and consequently also
   * the ERR flag
   * @rmtoll ICR          ERRC          LL_CRS_ClearFlag_ERR
   * @retval None
@@ -783,7 +766,7 @@ __STATIC_INLINE uint32_t LL_CRS_IsEnabledIT_ESYNC(void)
 /** @defgroup CRS_LL_EF_Init Initialization and de-initialization functions
   * @{
   */
-  
+
 ErrorStatus LL_CRS_DeInit(void);
 
 /**
@@ -810,5 +793,3 @@ ErrorStatus LL_CRS_DeInit(void);
 #endif
 
 #endif /* __STM32L0xx_LL_CRS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

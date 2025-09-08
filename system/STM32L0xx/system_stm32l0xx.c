@@ -22,29 +22,13 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * <h2><center>&copy; Copyright(c) 2016 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -63,19 +47,6 @@
 
 #include "stm32l0xx.h"
 
-#if !defined  (HSE_VALUE) 
-  #define HSE_VALUE    ((uint32_t)8000000U) /*!< Value of the External oscillator in Hz */
-#endif /* HSE_VALUE */
-
-#if !defined  (MSI_VALUE)
-  #define MSI_VALUE    ((uint32_t)2000000U) /*!< Value of the Internal oscillator in Hz*/
-#endif /* MSI_VALUE */
-   
-#if !defined  (HSI_VALUE)
-  #define HSI_VALUE    ((uint32_t)16000000U) /*!< Value of the Internal oscillator in Hz*/
-#endif /* HSI_VALUE */
-
-
 /**
   * @}
   */
@@ -91,7 +62,35 @@
 /** @addtogroup STM32L0xx_System_Private_Defines
   * @{
   */
+/************************* Miscellaneous Configuration ************************/
+/* Note: Following vector table addresses must be defined in line with linker
+         configuration. */
 
+/*!< Uncomment the following line and change the address
+     if you need to relocate your vector Table at a custom base address (+ VECT_TAB_OFFSET) */
+/* #define VECT_TAB_BASE_ADDRESS 0x08000000 */
+
+/*!< Uncomment the following line if you need to relocate your vector Table
+     in Sram else user remap will be done by default in Flash. */
+/* #define VECT_TAB_SRAM */
+
+// #ifndef VECT_TAB_OFFSET
+// #define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
+//                                                      This value must be a multiple of 0x100. */
+// #endif
+
+#ifndef VECT_TAB_BASE_ADDRESS
+#if defined(VECT_TAB_SRAM)
+#define VECT_TAB_BASE_ADDRESS   SRAM_BASE       /*!< Vector Table base address field.
+                                                     This value must be a multiple of 0x100. */
+#else
+#define VECT_TAB_BASE_ADDRESS   FLASH_BASE      /*!< Vector Table base address field.
+                                                     This value must be a multiple of 0x100. */
+#endif /* VECT_TAB_SRAM */
+#endif /* VECT_TAB_BASE_ADDRESS */
+
+
+/******************************************************************************/
 /**
   * @}
   */
@@ -115,7 +114,7 @@
                is no need to call the 2 first functions listed above, since SystemCoreClock
                variable is updated automatically.
   */
-  uint32_t SystemCoreClock = 2000000U;
+  uint32_t SystemCoreClock = 2097152U; /* 32.768 kHz * 2^6 */
   const uint8_t AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
   const uint8_t APBPrescTable[8] = {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
   const uint8_t PLLMulTable[9] = {3U, 4U, 6U, 8U, 12U, 16U, 24U, 32U, 48U};
@@ -146,32 +145,39 @@ void SystemInit (void)
   extern void *_HAL_g_pfnVectors;
 
 /*!< Set MSION bit */
-  RCC->CR |= (uint32_t)0x00000100U;
+  RCC->CR |= 0x00000100U;
 
   /*!< Reset SW[1:0], HPRE[3:0], PPRE1[2:0], PPRE2[2:0], MCOSEL[2:0] and MCOPRE[2:0] bits */
-  RCC->CFGR &= (uint32_t) 0x88FF400CU;
+  RCC->CFGR =  0x00000000U;
  
   /*!< Reset HSION, HSIDIVEN, HSEON, CSSON and PLLON bits */
-  RCC->CR &= (uint32_t)0xFEF6FFF6U;
+  RCC->CR = 0x00000100U;
   
   /*!< Reset HSI48ON  bit */
-  RCC->CRRCR &= (uint32_t)0xFFFFFFFEU;
+  RCC->CRRCR &= 0xFFFFFFFEU;
   
   /*!< Reset HSEBYP bit */
-  RCC->CR &= (uint32_t)0xFFFBFFFFU;
+  RCC->CR &= 0xFFFBFFFFU;
 
   /*!< Reset PLLSRC, PLLMUL[3:0] and PLLDIV[1:0] bits */
-  RCC->CFGR &= (uint32_t)0xFF02FFFFU;
+  RCC->CFGR &= 0xFF02FFFFU;
 
-  /*!< Disable all interrupts */
+  /* Disable all interrupts and clar flags */
   RCC->CIER = 0x00000000U;
+#if defined(RCC_CICR_HSI48RDYC)
+  RCC->CICR = 0x000001FF;
+#elif (RCC_CICR_CSSHSEC)
+  RCC->CICR = 0x000001BFU;
+#else
+  RCC->CICR = 0x000000BFU;
+#endif
   
-  /* Configure the Vector Table location -- this should already be done, but belt-and-suspenders */
+  /* Configure the Vector Table location add offset address ------------------*/
   SCB->VTOR = (uint32_t) &_HAL_g_pfnVectors;
 }
 
 /**
-  * @brief  Update SystemCoreClock according to Clock Register Values
+  * @brief  Update SystemCoreClock variable according to Clock Register Values.
   *         The SystemCoreClock variable contains the core clock (HCLK), it can
   *         be used by the user application to setup the SysTick timer or configure
   *         other parameters.
@@ -218,28 +224,42 @@ void SystemCoreClockUpdate (void)
   switch (tmp)
   {
     case 0x00U:  /* MSI used as system clock */
-      msirange = (RCC->ICSCR & RCC_ICSCR_MSIRANGE) >> 13U;
+      msirange = (RCC->ICSCR & RCC_ICSCR_MSIRANGE) >> RCC_ICSCR_MSIRANGE_Pos;
       SystemCoreClock = (32768U * (1U << (msirange + 1U)));
       break;
     case 0x04U:  /* HSI used as system clock */
+      if ((RCC->CR & RCC_CR_HSIDIVF) != 0U)
+      {
+        SystemCoreClock = HSI_VALUE / 4U;
+      }
+      else
+      {
       SystemCoreClock = HSI_VALUE;
+      }
       break;
     case 0x08U:  /* HSE used as system clock */
       SystemCoreClock = HSE_VALUE;
       break;
-    case 0x0CU:  /* PLL used as system clock */
+    default:  /* PLL used as system clock */
       /* Get PLL clock source and multiplication factor ----------------------*/
       pllmul = RCC->CFGR & RCC_CFGR_PLLMUL;
       plldiv = RCC->CFGR & RCC_CFGR_PLLDIV;
-      pllmul = PLLMulTable[(pllmul >> 18U)];
-      plldiv = (plldiv >> 22U) + 1U;
+      pllmul = PLLMulTable[(pllmul >> RCC_CFGR_PLLMUL_Pos)];
+      plldiv = (plldiv >> RCC_CFGR_PLLDIV_Pos) + 1U;
       
       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
 
       if (pllsource == 0x00U)
       {
         /* HSI oscillator clock selected as PLL clock entry */
+        if ((RCC->CR & RCC_CR_HSIDIVF) != 0U)
+        {
+          SystemCoreClock = (((HSI_VALUE / 4U) * pllmul) / plldiv);
+        }
+        else
+        {
         SystemCoreClock = (((HSI_VALUE) * pllmul) / plldiv);
+      }
       }
       else
       {
@@ -247,14 +267,10 @@ void SystemCoreClockUpdate (void)
         SystemCoreClock = (((HSE_VALUE) * pllmul) / plldiv);
       }
       break;
-    default: /* MSI used as system clock */
-      msirange = (RCC->ICSCR & RCC_ICSCR_MSIRANGE) >> 13U;
-      SystemCoreClock = (32768U * (1U << (msirange + 1U)));
-      break;
   }
   /* Compute HCLK clock frequency --------------------------------------------*/
   /* Get HCLK prescaler */
-  tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4U)];
+  tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> RCC_CFGR_HPRE_Pos)];
   /* HCLK clock frequency */
   SystemCoreClock >>= tmp;
 }

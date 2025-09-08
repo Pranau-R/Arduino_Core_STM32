@@ -4,17 +4,17 @@
   * @author  MCD Application Team
   * @brief   Header file of BUS LL module.
 
-  @verbatim                
+  @verbatim
                       ##### RCC Limitations #####
   ==============================================================================
-    [..]  
-      A delay between an RCC peripheral clock enable and the effective peripheral 
-      enabling should be taken into account in order to manage the peripheral read/write 
+    [..]
+      A delay between an RCC peripheral clock enable and the effective peripheral
+      enabling should be taken into account in order to manage the peripheral read/write
       from/to registers.
       (+) This delay depends on the peripheral mapping.
         (++) AHB & APB peripherals, 1 dummy read is necessary
 
-    [..]  
+    [..]
       Workarounds:
       (#) For AHB & APB peripherals, a dummy read to the peripheral register has been
           inserted in each LL_{BUS}_GRP{x}_EnableClock() function.
@@ -23,30 +23,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
+  * This software is licensed under terms that can be found in the LICENSE file in
+  * the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   ******************************************************************************
   */
 
@@ -87,7 +69,7 @@ extern "C" {
 /** @defgroup BUS_LL_EC_AHB1_GRP1_PERIPH  AHB1 GRP1 PERIPH
   * @{
   */
-#define LL_AHB1_GRP1_PERIPH_ALL            (uint32_t)0xFFFFFFFFU
+#define LL_AHB1_GRP1_PERIPH_ALL            0xFFFFFFFFU
 #define LL_AHB1_GRP1_PERIPH_DMA1           RCC_AHBENR_DMA1EN      /*!< DMA1 clock enable */
 #define LL_AHB1_GRP1_PERIPH_MIF            RCC_AHBENR_MIFEN       /*!< MIF clock enable */
 #define LL_AHB1_GRP1_PERIPH_SRAM           RCC_AHBSMENR_SRAMSMEN  /*!< Sleep Mode SRAM clock enable */
@@ -109,7 +91,7 @@ extern "C" {
 /** @defgroup BUS_LL_EC_APB1_GRP1_PERIPH  APB1 GRP1 PERIPH
   * @{
   */
-#define LL_APB1_GRP1_PERIPH_ALL            (uint32_t)0xFFFFFFFFU
+#define LL_APB1_GRP1_PERIPH_ALL            0xFFFFFFFFU
 #define LL_APB1_GRP1_PERIPH_TIM2           RCC_APB1ENR_TIM2EN     /*!< TIM2 clock enable */
 #if defined(TIM3)
 #define LL_APB1_GRP1_PERIPH_TIM3           RCC_APB1ENR_TIM3EN     /*!< TIM3 clock enable */
@@ -163,7 +145,7 @@ extern "C" {
 /** @defgroup BUS_LL_EC_APB2_GRP1_PERIPH  APB2 GRP1 PERIPH
   * @{
   */
-#define LL_APB2_GRP1_PERIPH_ALL            (uint32_t)0xFFFFFFFFU
+#define LL_APB2_GRP1_PERIPH_ALL            0xFFFFFFFFU
 #define LL_APB2_GRP1_PERIPH_SYSCFG         RCC_APB2ENR_SYSCFGEN  /*!< SYSCFG clock enable */
 #define LL_APB2_GRP1_PERIPH_TIM21          RCC_APB2ENR_TIM21EN   /*!< TIM21 clock enable */
 #if defined(TIM22)
@@ -186,7 +168,7 @@ extern "C" {
 /** @defgroup BUS_LL_EC_IOP_GRP1_PERIPH  IOP GRP1 PERIPH
   * @{
   */
-#define LL_IOP_GRP1_PERIPH_ALL             (uint32_t)0xFFFFFFFFU
+#define LL_IOP_GRP1_PERIPH_ALL             0xFFFFFFFFU
 #define LL_IOP_GRP1_PERIPH_GPIOA           RCC_IOPENR_GPIOAEN    /*!< GPIO port A control */
 #define LL_IOP_GRP1_PERIPH_GPIOB           RCC_IOPENR_GPIOBEN    /*!< GPIO port B control */
 #define LL_IOP_GRP1_PERIPH_GPIOC           RCC_IOPENR_GPIOCEN    /*!< GPIO port C control */
@@ -267,7 +249,7 @@ __STATIC_INLINE void LL_AHB1_GRP1_EnableClock(uint32_t Periphs)
 */
 __STATIC_INLINE uint32_t LL_AHB1_GRP1_IsEnabledClock(uint32_t Periphs)
 {
-  return (READ_BIT(RCC->AHBENR, Periphs) == Periphs);
+  return ((READ_BIT(RCC->AHBENR, Periphs) == (Periphs)) ? 1UL : 0UL);
 }
 
 /**
@@ -509,7 +491,7 @@ __STATIC_INLINE void LL_APB1_GRP1_EnableClock(uint32_t Periphs)
 */
 __STATIC_INLINE uint32_t LL_APB1_GRP1_IsEnabledClock(uint32_t Periphs)
 {
-  return (READ_BIT(RCC->APB1ENR, Periphs) == Periphs);
+  return ((READ_BIT(RCC->APB1ENR, Periphs) == (Periphs)) ? 1UL : 0UL);
 }
 
 /**
@@ -833,7 +815,7 @@ __STATIC_INLINE void LL_APB2_GRP1_EnableClock(uint32_t Periphs)
 */
 __STATIC_INLINE uint32_t LL_APB2_GRP1_IsEnabledClock(uint32_t Periphs)
 {
-  return (READ_BIT(RCC->APB2ENR, Periphs) == Periphs);
+  return ((READ_BIT(RCC->APB2ENR, Periphs) == (Periphs)) ? 1UL : 0UL);
 }
 
 /**
@@ -1030,7 +1012,7 @@ __STATIC_INLINE void LL_IOP_GRP1_EnableClock(uint32_t Periphs)
 */
 __STATIC_INLINE uint32_t LL_IOP_GRP1_IsEnabledClock(uint32_t Periphs)
 {
-  return (READ_BIT(RCC->IOPENR, Periphs) == Periphs);
+  return ((READ_BIT(RCC->IOPENR, Periphs) == (Periphs)) ? 1UL : 0UL);
 }
 
 /**
@@ -1184,4 +1166,3 @@ __STATIC_INLINE void LL_IOP_GRP1_DisableClockSleep(uint32_t Periphs)
 
 #endif /* __STM32L0xx_LL_BUS_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

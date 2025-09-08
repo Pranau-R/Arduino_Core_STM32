@@ -5,7 +5,7 @@
 #	Input to generate_boards.bri, produces Arduino IDE boards.txt.
 #
 # Copyright:
-#	Copyright (c) 2018-2023 MCCI Corporation
+#	Copyright (c) 2018-2025 MCCI Corporation
 #
 #	This library is free software; you can redistribute it and/or
 #	modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@
 #	Define all the boards for this board support package to the Arduino IDE
 #
 # Copyright:
-#	Copyright (c) 2018-2023 MCCI Corporation
+#	Copyright (c) 2018-2025 MCCI Corporation
 #
 #	This library is free software; you can redistribute it and/or
 #	modify it under the terms of the GNU Lesser General Public
@@ -80,7 +80,7 @@ $section usb
 
 {{board}}.build.core=arduino
 {{board}}.build.board={{build_board}}
-{{board}}.build.product_line=STM32L082xx
+{{board}}.build.product_line=STM32L072xx
 
 {{board}}.upload.maximum_size=196608
 {{board}}.upload.maximum_data_size=20480

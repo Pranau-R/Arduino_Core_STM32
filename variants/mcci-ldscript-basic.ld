@@ -4,7 +4,7 @@
 
 **  File        : LinkerScript.ld
 **
-**  Abstract    : Linker script for STM32L082CZYx Device with
+**  Abstract    : Linker script for STM32L072CZYx Device with
 **                192KByte FLASH, 20KByte RAM
 **
 **                Set heap size, stack size and stack location according
@@ -181,7 +181,7 @@ SECTIONS
     . = ALIGN(8);
   } >RAM
 
-   /* insert the application signature block */
+  /* insert the application signature block */
   .McciBootloader_Signature :
     {
     _McciBootloader_AppImageTop = .;

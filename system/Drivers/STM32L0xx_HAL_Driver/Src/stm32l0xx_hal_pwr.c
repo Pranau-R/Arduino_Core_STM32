@@ -12,41 +12,18 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l0xx_hal.h"
-#include "stm32l0xx_ll_rcc.h"
-
-// for some reason, this bit is not defined by CMSIS!
-#define SYSCFG_CFGR3_EN_VREFINT_Pos	(0u)
-#define	SYSCFG_CFGR3_EN_VREFINT_Msk	(1u << SYSCFG_CFGR3_EN_VREFINT_Pos)
-#define SYSCFG_CFGR3_EN_VREFINT		SYSCFG_CFGR3_EN_VREFINT_Msk
 
 #ifdef HAL_PWR_MODULE_ENABLED
 /** @addtogroup STM32L0xx_HAL_Driver
@@ -61,18 +38,18 @@
   * @{
   */
 
-static void HAL_PWR_RestoreCFGR(uint32_t save_rcc_cfgr);
-
+#if defined(PWR_PVD_SUPPORT)
 /** @defgroup PWR_PVD_Mode_Mask PWR PVD Mode Mask
   * @{
   */
-#define PVD_MODE_IT               ((uint32_t)0x00010000U)
-#define PVD_MODE_EVT              ((uint32_t)0x00020000U)
-#define PVD_RISING_EDGE           ((uint32_t)0x00000001U)
-#define PVD_FALLING_EDGE          ((uint32_t)0x00000002U)
+#define PVD_MODE_IT               (0x00010000U)
+#define PVD_MODE_EVT              (0x00020000U)
+#define PVD_RISING_EDGE           (0x00000001U)
+#define PVD_FALLING_EDGE          (0x00000002U)
 /**
   * @}
   */
+#endif
 
 /**
   * @}
@@ -143,6 +120,7 @@ void HAL_PWR_DeInit(void)
           line16 and can generate an interrupt if enabled. This is done through
           __HAL_PWR_PVD_EXTI_ENABLE_IT() macro.
       (+) The PVD is stopped in Standby mode.
+      (+) The PVD feature is not supported on L0 Value line.
 
     *** WakeUp pin configuration ***
     ================================
@@ -364,9 +342,10 @@ void HAL_PWR_DisableBkUpAccess(void)
   CLEAR_BIT(PWR->CR, PWR_CR_DBP);
 }
 
+#if defined(PWR_PVD_SUPPORT)
 /**
   * @brief  Configures the voltage threshold detected by the Power Voltage Detector(PVD).
-  * @param  sConfigPVD: pointer to an PWR_PVDTypeDef structure that contains the configuration
+  * @param  sConfigPVD pointer to an PWR_PVDTypeDef structure that contains the configuration
   *         information for the PVD.
   * @note   Refer to the electrical characteristics of your device datasheet for
   *         more details about the voltage threshold corresponding to each
@@ -431,6 +410,7 @@ void HAL_PWR_DisablePVD(void)
   /* Disable the power voltage detector */
   CLEAR_BIT(PWR->CR, PWR_CR_PVDE);
 }
+#endif /* PWR_PVD_SUPPORT */
 
 /**
   * @brief Enables the WakeUp PINx functionality.
@@ -483,16 +463,21 @@ void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx)
   */
 void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry)
 {
-  uint32_t const save_pwr_cr = PWR->CR;
-  uint32_t const save_rcc_apb1enr = RCC->APB1ENR;
-  uint32_t tmpreg = 0U;
+   uint32_t tmpreg = 0U;
+   uint32_t ulpbit, vrefinbit;
 
   /* Check the parameters */
   assert_param(IS_PWR_REGULATOR(Regulator));
   assert_param(IS_PWR_SLEEP_ENTRY(SLEEPEntry));
 
-  /* turn on the clock to the power registers */
-  RCC->APB1ENR = save_rcc_apb1enr | RCC_APB1ENR_PWREN;
+  /* It is forbidden to configure both EN_VREFINT=1 and ULP=1 if the device is
+     in Stop mode or in Sleep/Low-power sleep mode */
+  ulpbit = READ_BIT(PWR->CR, PWR_CR_ULP);
+  vrefinbit = READ_BIT(SYSCFG->CFGR3, SYSCFG_CFGR3_EN_VREFINT);
+  if((ulpbit != 0) && (vrefinbit != 0))
+  {
+    CLEAR_BIT(PWR->CR, PWR_CR_ULP);
+  }
 
   /* Select the regulator state in Sleep mode ---------------------------------*/
   tmpreg = PWR->CR;
@@ -505,9 +490,6 @@ void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry)
 
   /* Store the new value */
   PWR->CR = tmpreg;
-
-  /* restore clock control */
-  RCC->APB1ENR = save_rcc_apb1enr;
 
   /* Clear SLEEPDEEP bit of Cortex System Control Register */
   CLEAR_BIT(SCB->SCR, SCB_SCR_SLEEPDEEP_Msk);
@@ -525,6 +507,15 @@ void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry)
     __WFE();
     __WFE();
   }
+
+  if((ulpbit != 0) && (vrefinbit != 0))
+  {
+    SET_BIT(PWR->CR, PWR_CR_ULP);
+  }
+
+  /* Additional NOP to ensure all pending instructions are flushed before entering low power mode */
+  __NOP();
+
 }
 
 /**
@@ -553,23 +544,24 @@ void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry)
   */
 void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry)
 {
-  uint32_t const save_rcc_cfgr = RCC->CFGR;
-  uint32_t const save_pwr_cr = PWR->CR;
-  uint32_t const save_rcc_apb1enr = RCC->APB1ENR;
-  uint32_t const save_rcc_apb2enr = RCC->APB2ENR;
-  uint32_t const save_syscfg_cfgr3 = SYSCFG->CFGR3;
-  uint32_t tmpreg;
+  uint32_t tmpreg = 0U;
+  uint32_t ulpbit, vrefinbit;
 
   /* Check the parameters */
   assert_param(IS_PWR_REGULATOR(Regulator));
   assert_param(IS_PWR_STOP_ENTRY(STOPEntry));
 
-  /* turn on the clock to the power registers */
-  RCC->APB1ENR = save_rcc_apb1enr | RCC_APB1ENR_PWREN;
-  RCC->APB2ENR = save_rcc_apb2enr | RCC_APB2ENR_SYSCFGEN;
+  /* It is forbidden to configure both EN_VREFINT=1 and ULP=1 if the device is
+     in Stop mode or in Sleep/Low-power sleep mode */
+  ulpbit = READ_BIT(PWR->CR, PWR_CR_ULP);
+  vrefinbit = READ_BIT(SYSCFG->CFGR3, SYSCFG_CFGR3_EN_VREFINT);
+  if((ulpbit != 0) && (vrefinbit != 0))
+  {
+    CLEAR_BIT(PWR->CR, PWR_CR_ULP);
+  }
 
   /* Select the regulator state in Stop mode ---------------------------------*/
-  tmpreg = save_pwr_cr;
+  tmpreg = PWR->CR;
 
   /* Clear PDDS and LPDS bits */
   CLEAR_BIT(tmpreg, (PWR_CR_PDDS | PWR_CR_LPSDSR));
@@ -583,25 +575,11 @@ void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry)
   /* Set SLEEPDEEP bit of Cortex System Control Register */
   SET_BIT(SCB->SCR, SCB_SCR_SLEEPDEEP_Msk);
 
-  if (Regulator == PWR_LOWPOWERREGULATOR_ON)
-  {
-    // per datasheet 10.2.3 "it's forbidden to have ULP and EN_VREFINT"
-    SYSCFG->CFGR3 = save_syscfg_cfgr3 & ~SYSCFG_CFGR3_EN_VREFINT;
-    PWR->CR |= (PWR_CR_FWU | PWR_CR_ULP);
-  }
-
-  /* restore clock control */
-  RCC->APB1ENR = save_rcc_apb1enr;
-  RCC->APB2ENR = save_rcc_apb2enr;
-
   /* Select Stop mode entry --------------------------------------------------*/
   if(STOPEntry == PWR_STOPENTRY_WFI)
   {
     /* Request Wait For Interrupt */
-    uint32_t const save_flash_acr = FLASH->ACR;
-    FLASH->ACR = save_flash_acr | FLASH_ACR_SLEEP_PD;
     __WFI();
-    FLASH->ACR = save_flash_acr;
   }
   else
   {
@@ -614,56 +592,14 @@ void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry)
   /* Reset SLEEPDEEP bit of Cortex System Control Register */
   CLEAR_BIT(SCB->SCR, SCB_SCR_SLEEPDEEP_Msk);
 
-  /* turn on the clock to the power registers */
-  RCC->APB1ENR = save_rcc_apb1enr | RCC_APB1ENR_PWREN;
-  RCC->APB2ENR = save_rcc_apb2enr | RCC_APB2ENR_SYSCFGEN;
-
-  /* restore the registers we stuffed */
-  PWR->CR = save_pwr_cr;
-  SYSCFG->CFGR3 = save_syscfg_cfgr3;
-
-  /* restore clock control */
-  RCC->APB1ENR = save_rcc_apb1enr;
-  RCC->APB2ENR = save_rcc_apb2enr;
-
-  HAL_PWR_RestoreCFGR(save_rcc_cfgr);
-}
-
-static void HAL_PWR_RestoreCFGR(uint32_t save_rcc_cfgr)
-{
-  if ((save_rcc_cfgr & RCC_CFGR_SWS) == RCC_CFGR_SWS_PLL)
+  if((ulpbit != 0) && (vrefinbit != 0))
   {
-    /* Enable PLL */
-    LL_RCC_PLL_Enable();
-    while (LL_RCC_PLL_IsReady() != 1U)
-    {
-      /* Wait for PLL ready */
-    }
-
-    RCC->CFGR = save_rcc_cfgr;
-
-    while (LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-    {
-      /* Wait for system clock switch to PLL */
-    }
+    SET_BIT(PWR->CR, PWR_CR_ULP);
   }
 }
 
 /**
-  * @brief Enter STOP mode with WFI instruction
-  * @note For legacy reasons, this routine (despite its name) does not enter
-  *       STANDBY mode; instead, it enters stop mode. Existing MCCI code and
-  *       customer code will probably break if you ever change this to use
-  *       real STANDBY mode. For real STANDBY, please use HAL_PWR_EnterTrueSTANDBYMode().
-  * @retval none
-  */
-void HAL_PWR_EnterSTANDBYMode(void)
-{
-  HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
-}
-
-/**
-  * @brief Enter Standby mode.
+  * @brief Enters Standby mode.
   * @note In Standby mode, all I/O pins are high impedance except for:
   *          - Reset pad (still available)
   *          - RTC_AF1 pin (PC13) if configured for tamper, time-stamp, RTC
@@ -673,52 +609,12 @@ void HAL_PWR_EnterSTANDBYMode(void)
   *          - WKUP pin 2 (PC13) if enabled.
   *          - WKUP pin 3 (PE06) if enabled, for stm32l07xxx and stm32l08xxx devices only.
   *          - WKUP pin 3 (PA02) if enabled, for stm32l031xx devices only.
-  *
-  *     Per the datasheet:
-  *       After waking up from Standby mode, program execution restarts in the same way
-  *       as after a Reset (boot pins sampling, vector reset is fetched, etc.). The SBF
-  *       status flag in the PWR_CSR register (see Section 6.4.2) indicates that the MCU
-  *       was in Standby mode.
-  *
-  *     Also per table 38, STANDBY is only entered if the following conditions are
-  *     true prior to WFI -- one of them being "no wakeup condition active", which
-  *     means we must be prepared for a return from STANDBY request, but it will be
-  *     infrequent.
-  *         - SLEEPDEEP = 1
-  *         - PDDS = 1 in PWR_CR
-  *         - WUF = 0 in PWR_CSR (user must arrange for this)
-  *         - no pending events that would wake us up.
-  *
-  *     This routine establishes the key preconditions are met. It also clears the
-  *     SBF. It assumes that clocks are all set up to allow writes to PWR->CR,
-  *     SCB->SCR, and FLASCH->ACR. However, the caller is responsible for clearing
-  *     WUF before enabling events, so that events happening between enable and _WFI()
-  *     will cause an immediate wakeup and reboot when the _WFI is reached.
-  *
-  * @retval None; does not return.
+  * @retval None
   */
-void HAL_PWR_EnterTrueSTANDBYMode(void)
+void HAL_PWR_EnterSTANDBYMode(void)
 {
-  uint32_t const save_rcc_cfgr = RCC->CFGR;
-  uint32_t const save_rcc_apb1enr = RCC->APB1ENR;
-  uint32_t const save_pwr_cr = PWR->CR;
-  uint32_t rPwrCr;
-
-  /* turn on the clock to the power registers */
-  RCC->APB1ENR = save_rcc_apb1enr | RCC_APB1ENR_PWREN;
-
-  /* copy saved power CR to save a (slow) peripheral access */
-  rPwrCr = save_pwr_cr;
-
-  /* set PDDS to signal that we really want STANDBY mode */
-  /* ask PWR_CR to clear standby flag so we know we've been in standby */
-  SET_BIT(rPwrCr, PWR_CR_PDDS | PWR_CR_CSBF);
-
-  /* apply the changes to the power control register */
-  PWR->CR = rPwrCr;
-
-  /* now turn off the clock to power registers */
-  RCC->APB1ENR = save_rcc_apb1enr;
+  /* Select Standby mode */
+  SET_BIT(PWR->CR, PWR_CR_PDDS);
 
   /* Set SLEEPDEEP bit of Cortex System Control Register */
   SET_BIT(SCB->SCR, SCB_SCR_SLEEPDEEP_Msk);
@@ -727,14 +623,8 @@ void HAL_PWR_EnterTrueSTANDBYMode(void)
 #if defined ( __CC_ARM)
   __force_stores();
 #endif
-  {
-    uint32_t const save_flash_acr = FLASH->ACR;
-
-    /* Request Wait For Interrupt */
-    FLASH->ACR = save_flash_acr | FLASH_ACR_SLEEP_PD;
-    __WFI();
-    __builtin_unreachable();
-  }
+  /* Request Wait For Interrupt */
+  __WFI();
 }
 
 /**
@@ -790,28 +680,7 @@ void HAL_PWR_DisableSEVOnPend(void)
   CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SEVONPEND_Msk));
 }
 
-/**
-  * @brief Reset the wakeup flag
-  * @note The PWR->CSR WUF, if set, will cause an immediate return from
-  *       STANDBY. It's not cleared by system reset. So, prior to setting
-  *       up a wakeup event, it's a good idea to clear it (otherwise you
-  *       will reboot immediately when you try to enter STANDBY).
-  * @retval None
-  */
-void HAL_PWR_ResetWakeupFlag(void)
-{
-  uint32_t const save_rcc_apb1enr = RCC->APB1ENR;
-  uint32_t const save_pwr_cr = PWR->CR;
-
-  /* turn on the clock to the power registers */
-  RCC->APB1ENR = save_rcc_apb1enr | RCC_APB1ENR_PWREN;
-
-  PWR->CR = save_pwr_cr | PWR_CR_CWUF;
-
-  /* now turn off the clock to power registers */
-  RCC->APB1ENR = save_rcc_apb1enr;
-}
-
+#if defined(PWR_PVD_SUPPORT)
 /**
   * @brief This function handles the PWR PVD interrupt request.
   * @note This API should be called under the PVD_IRQHandler().
@@ -840,6 +709,7 @@ __weak void HAL_PWR_PVDCallback(void)
             the HAL_PWR_PVDCallback could be implemented in the user file
    */
 }
+#endif /* PWR_PVD_SUPPORT */
 
 /**
   * @}
@@ -857,6 +727,3 @@ __weak void HAL_PWR_PVDCallback(void)
 /**
   * @}
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
