@@ -45,9 +45,9 @@ extern const PinName digitalPin[];
 enum {
   PA10, //D0      D0_RX
   PA9,  //D1      D1_TX
-  PB15,  //D2      RADIO_MOSI   Murata internal
-  PB14,  //D3      RADIO_MISO   Murata internal
-  PB13,  //D4      RADIO_SCK    Murata internal
+  PB15, //D2      RADIO_MOSI   Murata internal
+  PB14, //D3      RADIO_MISO   Murata internal
+  PB13, //D4      RADIO_SCK    Murata internal
   PB6,  //D5      D5
   PA13, //D6      D6_SWDIO
   PB12, //D7      RADIO_NSS    Murata internal
@@ -68,8 +68,8 @@ enum {
   PB4,  //D22     MISO
   PB5,  //D23     MOSI
   PB3,  //D24     SCK
-  PB0,  //D25     RADIO_DIO_1  (Main interrupt pin from SX1262)
-  PA15, //D26     RADIO_ANT_SWITCH_RX       (VCTL1 for RF switch)
+  PB0,  //D25     RADIO_DIO_1   (main IRQ)
+  PA15, //D26     RADIO_ANT_SWITCH_RX   (CRF1, TX/RX control)
   PA5,  //D27     ACC_INT_1
   PB11, //D28     SDA_PMIC
   PB10, //D29     SCL_PMIC
@@ -96,7 +96,7 @@ enum {
 #define RADIO_MOSI              D2
 #define RADIO_MISO              D3
 #define RADIO_SCK               D4
-#define RADIO_RESET             D8 
+#define RADIO_RESET             D8
 #define RADIO_DIO_1             D25
 #define RADIO_BUSY              D30
 
@@ -115,8 +115,8 @@ enum {
 #define PIN_WIRE_SDA            D20 // Default for Arduino connector compatibility
 #define PIN_WIRE_SCL            D21 // Default for Arduino connector compatibility
 
-#define PIN_WIRE_PMIC_SDA       D34 // PMMIC SDA pin
-#define PIN_WIRE_PMIC_SCL       D35 // PMIC SCL pin
+#define PIN_WIRE_PMIC_SDA       D28 // PMIC SDA pin
+#define PIN_WIRE_PMIC_SCL       D29 // PMIC SCL pin
 
 //Timer Definitions
 //Do not use timer used by PWM pins when possible. See PinMap_PWM in PeripheralPins.c

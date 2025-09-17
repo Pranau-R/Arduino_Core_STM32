@@ -182,6 +182,9 @@ static const uint8_t SCK  = PIN_SPI_SCK;
 static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;
 
+static const uint8_t SDA_PMIC = PIN_WIRE_PMIC_SDA;
+static const uint8_t SCL_PMIC = PIN_WIRE_PMIC_SCL;
+
 #ifdef __cplusplus
 extern "C" {
 #endif

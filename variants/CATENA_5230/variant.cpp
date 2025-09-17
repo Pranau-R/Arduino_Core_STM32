@@ -31,9 +31,9 @@ const PinName digitalPin[] = {
 //PX_n,  //Dx
   PA_10, //D0      D0_RX
   PA_9,  //D1      D1_TX
-  PB_15,  //D2      RADIO_MOSI   Murata internal
-  PB_14,  //D3      RADIO_MISO   Murata internal
-  PB_13,  //D4      RADIO_SCK    Murata internal
+  PB_15, //D2      RADIO_MOSI   Murata internal
+  PB_14, //D3      RADIO_MISO   Murata internal
+  PB_13, //D4      RADIO_SCK    Murata internal
   PB_6,  //D5      D5
   PA_13, //D6      D6_SWDIO
   PB_12, //D7      RADIO_NSS    Murata internal
@@ -54,8 +54,8 @@ const PinName digitalPin[] = {
   PB_4,  //D22     MISO
   PB_5,  //D23     MOSI
   PB_3,  //D24     SCK
-  PB_0,  //D25     RADIO_DIO_1  (Main interrupt pin from SX1262)
-  PA_15, //D26     RADIO_ANT_SWITCH_RX       (VCTL1 for RF switch)
+  PB_0,  //D25     RADIO_DIO_1   (main IRQ)
+  PA_15, //D26     RADIO_ANT_SWITCH_RX   (CRF1, TX/RX control)
   PA_5,  //D27     ACC_INT_1
   PB_11, //D28     SDA_PMIC
   PB_10, //D29     SCL_PMIC
